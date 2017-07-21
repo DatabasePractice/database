@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="webproject.mapper.UserMapper">
+<!-- 删除用户 -->
+<delete id="deleteUser" parameterType="String">
+delete from er_user where id=#{id}
+</delete>
+
+<!-- 新增用户 -->
+<insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+insert into er_user set password=#{password},account=#{account},name=#{name},roleid=#{roleid} 
+</insert>
+<!-- 通过id修改用户信息 -->
+<update id="updateUser" parameterType="User">
+update er_user set password=#{password},account=#{account},name=#{name},roleid=#{roleid} where id=#{id}
+</update>
+<!-- 查询用户 -->
+<select id="findUser" parameterType="User" resultType="User" >
+select * from er_user where 1=1
+<if test="id!=null">
+and id=#{id}
+</if>
+<if test="account!=null">
+and account=#{account}
+</if>
+<if test="name!=null">
+and name=#{name}
+</if>
+<if test="roleid!=null">
+and roleid=#{roleid}
+</if>
+</select>
+<!-- 查询账号相同的用户 -->
+<select id="findsameaccount" parameterType="User" resultType="int">
+select count(*) from er_user where account=#{account}
+</select>
+<!-- 查询用户数据总量 -->
+<select id="findusercount" resultType="int">
+select count(*) from er_user
+</select>
+<!-- 查询用户拥有的菜单 -->
+<select id="findparentmenu" parameterType="User" resultType="MenuVo">
+select b.menuid,menuname,request,isleaf,parent from er_user as a,er_menu as b,er_role_authorize as c where a.account=#{account} and
+a.roleid=c.roleid and b.menuid=c.menuid and b.isleaf=0
+</select>
+<!-- 查询用户拥有的二级菜单 -->
+<select id="findsonmenu" parameterType="User" resultType="MenuVo">
+select b.menuid,menuname,request,isleaf,parent from er_user as a,er_menu as b,er_role_authorize as c where a.account=#{account} and
+a.roleid=c.roleid and b.menuid=c.menuid and b.isleaf=1
+</select>
+<!-- 查询用户拥有的所有菜单 -->
+<select id="findmenus" parameterType="User" resultType="MenuVo">
+select b.menuid,menuname,request,isleaf,parent,level from er_user as a,er_menu as b,er_role_authorize as c where a.account=#{account} and
+a.roleid=c.roleid and b.menuid=c.menuid order by level asc
+</select>
+<!-- 查询角色信息 -->
+<select id="findRole" parameterType="User" resultType="Role">
+select a.roleid,rolename from er_role a,er_user b where b.account=#{account} and b.roleid=a.roleid
+</select>
+<!-- 查询user表与role表相关联 -->
+<select id="findUserAndRole" parameterType="User" resultType="Map">
+select id,name,account,password ,a.roleid,rolename from er_role a,er_user b where   b.roleid=a.roleid
+<if test="account!=null">
+and account=#{account}
+</if>
+<if test="name!=null">
+and name=#{name}
+</if>
+</select>
+</mapper>

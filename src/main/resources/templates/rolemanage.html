@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<script type="text/javascript">
+    function initTable() {
+        $table.bootstrapTable({
+            height: getHeight(),
+            columns: 
+                             
+                [
+                    {
+                        field: 'roleid',
+                        title: '角色id',
+                        sortable: true,
+                        editable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center'
+                    },{
+                        field: 'rolename',
+                        title: '角色名称',
+                        sortable: true,
+                        editable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center'
+                    },  {	
+                        field: 'operate',
+                        title: 'Item Operate',
+                        align: 'center',
+                        events: operateEvents,
+                        formatter: operateFormatter
+                    }
+                ]
+            ]
+        });
+            </script>
+</body>
+</html>
