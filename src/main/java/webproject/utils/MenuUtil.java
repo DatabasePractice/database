@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 import webproject.mapper.MenuMapper;
 import webproject.mapper.UserMapper;
-import webproject.model.MenuVo;
+import webproject.model.system.MenuVo;
 
 @Component
 public class MenuUtil {

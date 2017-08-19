@@ -6,10 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import webproject.model.Book;
-import webproject.model.MenuVo;
-import webproject.model.Role;
-import webproject.model.User;
+import webproject.model.system.MenuVo;
+import webproject.model.system.Role;
+import webproject.model.system.User;
 
 /** 
 * @author hts

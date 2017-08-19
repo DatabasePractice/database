@@ -23,10 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import webproject.mapper.UserMapper;
-import webproject.model.Role;
-import webproject.model.User;
-import webproject.service.libraryService;
-
+import webproject.model.system.Role;
+import webproject.model.system.User;
 /**
  *  
  * 
@@ -36,8 +34,7 @@ import webproject.service.libraryService;
  */
 @Component
 public class MyShiroRealm extends AuthorizingRealm {
-	@Autowired
-	libraryService myservice;
+
 	@Autowired
 	UserMapper mapper;
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -68,7 +65,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 		String username = token.getUsername();
 		User user = new User();
 		user.setAccount(username);
-		List<User> list = myservice.findUser(user);
+		List<User> list = mapper.findUser(user);
 		if(list!=null&&!list.isEmpty())
 			{User tempuser = list.get(0);
 			// 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验

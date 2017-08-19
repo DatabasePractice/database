@@ -1,4 +1,4 @@
-package webproject.model;
+package webproject.model.system;
 
 import java.util.ArrayList;
 import java.util.List;

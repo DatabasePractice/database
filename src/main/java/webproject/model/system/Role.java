@@ -1,4 +1,4 @@
-package webproject.model;
+package webproject.model.system;
 /** 
 * @author hts
 * @version date：2017年4月14日 下午3:56:44 

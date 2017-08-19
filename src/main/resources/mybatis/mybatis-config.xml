@@ -3,10 +3,9 @@
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 <typeAliases>
-<typeAlias type="webproject.model.User" alias="User"/>
-<typeAlias type="webproject.model.MenuVo" alias="MenuVo"/>
-<typeAlias type="webproject.model.Role" alias="Role"/>
-<typeAlias type="webproject.model.Book" alias="Book"/>
+<typeAlias type="webproject.model.system.User" alias="User"/>
+<typeAlias type="webproject.model.system.MenuVo" alias="MenuVo"/>
+<typeAlias type="webproject.model.system.Role" alias="Role"/>
 </typeAliases>
 
 <mappers>

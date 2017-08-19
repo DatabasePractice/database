@@ -1,4 +1,4 @@
-package webproject.web;
+package webproject.controller.system;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +16,7 @@ import com.baidu.ueditor.ActionEnter;
 @Controller
 @Transactional
 @RequestMapping()
-public class CommonController {
+public class UeditorController {
 	@RequestMapping(value = "/ueditor")
 	public void config(HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("application/json");

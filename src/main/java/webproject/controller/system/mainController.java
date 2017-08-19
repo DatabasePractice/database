@@ -1,4 +1,4 @@
-package webproject.web;
+package webproject.controller.system;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 
@@ -22,13 +22,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import webproject.controller.base.BaseController;
 import webproject.mapper.MenuMapper;
 import webproject.mapper.RoleMapper;
 import webproject.mapper.UserMapper;
-import webproject.model.MenuVo;
-import webproject.model.Role;
-import webproject.model.User;
-import webproject.service.libraryService;
+import webproject.model.system.MenuVo;
+import webproject.model.system.Role;
+import webproject.model.system.User;
 import webproject.utils.MenuUtil;
 import webproject.web.config.MyShiroRealm;
 
@@ -40,7 +40,7 @@ import webproject.web.config.MyShiroRealm;
  * 
  */
 @Controller
-public class mainController {
+public class mainController extends BaseController {
 	@Autowired
 	UserMapper usermapper;
 	@Autowired
@@ -48,6 +48,7 @@ public class mainController {
 	@Autowired
 	RoleMapper rolemapper;
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@RequestMapping("/index")
 	public String index(Model model) {
 		Session session = SecurityUtils.getSubject().getSession();
@@ -64,10 +65,18 @@ public class mainController {
 				}
 			}
 		}
-		logger.info(list.get(0).toString());
-		model.addAttribute("menuHead", list.get(0));
+		//采用实体类导致与前端代码冲突，不好的写法
+		if (!list.isEmpty()) {
+			model.addAttribute("menuHead", list.get(0));
+		}
+		else model.addAttribute("menuHead", new MenuVo());
+		
+		//采用实体类导致与前端代码冲突，不好的写法
 		Role role = usermapper.findRole(user);
+		if(role==null) 
+		role=new Role();
 		model.addAttribute("role", role);
+		
 		return "index";
 	}
 
@@ -76,23 +85,15 @@ public class mainController {
 		return "register";
 	}
 
-	@RequestMapping("/system")
-	public String test(Model model) {
-		return "usertable";
-	}
-
 	@RequestMapping("/login")
 	public String login(Model model) {
+		
 		return "login";
-	}
-
-	@RequestMapping("/bookmanage")
-	public String manage(Model model) {
-		return "bookmanage";
 	}
 
 	@RequestMapping("/logout")
 	public String logout(Model model) {
+		logger.info("用户" + SecurityUtils.getSubject().getPrincipal().toString() + "退出系统");
 		SecurityUtils.getSubject().logout();
 		return "login";
 	}
@@ -124,6 +125,7 @@ public class mainController {
 			SecurityUtils.getSubject().login(token);
 			map.put("status", 200);
 			map.put("massage", "登陆成功");
+			logger.info("用户" + SecurityUtils.getSubject().getPrincipal().toString() + "登陆系统");
 		} catch (ExcessiveAttemptsException eae) {
 
 			map.put("status", 500);
@@ -135,21 +137,22 @@ public class mainController {
 		}
 		return map;
 	}
+
 	@RequestMapping("/menu")
-	public String menu(Model model)
-	{   List list=menumapper.findAllMenus();
-	    MenuUtil.MenuProcess(list);
-		model.addAttribute("menus",list);
-		
+	public String menu(Model model) {
+		List list = menumapper.findAllMenus();
+		MenuUtil.MenuProcess(list);
+		model.addAttribute("menus", list);
+
 		return "menumanage";
-		
+
 	}
+
 	@RequestMapping("/authorize")
-	public String authorize(Model model)
-	{  
-		
+	public String authorize(Model model) {
+
 		return "authorizeManage";
-		
+
 	}
 
 }

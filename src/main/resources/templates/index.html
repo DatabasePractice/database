@@ -1,7 +1,17 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
+<!-- 相对路径设定（建议每个页面都加上，防止相对路径出错误） -->
+    <base th:href="${#httpServletRequest.getScheme()
+    +'://'
+    +#httpServletRequest.getServerName()
+    +':'
+    +#httpServletRequest.getServerPort()
+    +#httpServletRequest.getContextPath()
+    +'/'
+    }"
+    />
+<!--     相对路径设定结束 -->
 <title>index</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="shortcut icon" href="favicon.ico" />

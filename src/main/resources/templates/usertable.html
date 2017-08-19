@@ -2,7 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org" >
 <head>
 <meta charset="UTF-8" />
-
+<!-- 相对路径设定（建议每个页面都加上，防止相对路径出错误） -->
+    <base th:href="${#httpServletRequest.getScheme()
+    +'://'
+    +#httpServletRequest.getServerName()
+    +':'
+    +#httpServletRequest.getServerPort()
+    +#httpServletRequest.getContextPath()
+    +'/'
+    }"
+    />
+<!--     相对路径设定结束 -->
 <title>用户表格</title>
 <link rel="shortcut icon" href="favicon.ico" />
 <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet" />
@@ -236,9 +246,9 @@
 			//超级管理员不能修改        
 			if (row.roleid == "0101")
 				return;
-			if (row.roleid == "0102")
-				if ($("#sessionrole").val() == "0102")
-					return;
+// 			if (row.roleid == "0102")
+// 				if ($("#sessionrole").val() == "0102")
+// 					return;
 			$modal.data('id', row.id);
 			$modal.find('.modal-title').text(title);
 			for ( var name in row) {

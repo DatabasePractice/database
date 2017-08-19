@@ -1,4 +1,4 @@
-package webproject.web;
+package webproject.controller.system;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,8 +18,8 @@ import com.github.pagehelper.PageHelper;
 
 import webproject.mapper.MenuMapper;
 import webproject.mapper.UserMapper;
-import webproject.model.MenuVo;
-import webproject.model.User;
+import webproject.model.system.MenuVo;
+import webproject.model.system.User;
 import webproject.utils.AdminUtil;
 import webproject.utils.MenuUtil;
 

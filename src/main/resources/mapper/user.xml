@@ -59,7 +59,7 @@ select a.roleid,rolename from er_role a,er_user b where b.account=#{account} and
 </select>
 <!-- 查询user表与role表相关联 -->
 <select id="findUserAndRole" parameterType="User" resultType="Map">
-select id,name,account,password ,a.roleid,rolename from er_role a,er_user b where   b.roleid=a.roleid
+select id,name,account,password ,a.roleid,rolename from  er_user b left join  er_role a on b.roleid=a.roleid
 <if test="account!=null">
 and account=#{account}
 </if>

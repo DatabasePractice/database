@@ -1,4 +1,4 @@
-package webproject.web;
+package webproject.controller.system;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,10 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.PageHelper;
 
 import ch.qos.logback.classic.Logger;
+import webproject.controller.base.BaseController;
+import webproject.mapper.RoleMapper;
 import webproject.mapper.UserMapper;
-import webproject.model.Book;
-import webproject.model.Role;
-import webproject.model.User;
+import webproject.model.system.Role;
+import webproject.model.system.User;
 import webproject.utils.AdminUtil;
 
 /**
@@ -35,10 +36,19 @@ import webproject.utils.AdminUtil;
  */
 @Controller
 @RequestMapping("system")
-public class manageUserConroller {
+public class manageUserConroller extends BaseController {
 	@Autowired
 	UserMapper mapper;
-
+	@Autowired
+	RoleMapper roleMapper;
+	
+	@RequestMapping("")
+	public String toUserTable(Model model) {
+		List<Role> rolelist=roleMapper.findAllRoles();
+		model.addAttribute("rolelist",rolelist);
+		return "usertable";
+	}
+	
 	@RequestMapping("/userTableInit")
 	@ResponseBody
 	public Map<String, Object> tableinit(int limit, int offset, Model model) {
@@ -47,7 +57,6 @@ public class manageUserConroller {
 		int pageNum = offset / limit + 1;
 		PageHelper.startPage(pageNum, limit);
 		List list = mapper.findUserAndRole(null);
-		System.out.println("hello");
 		map.put("rows", list);
 		map.put("total", mapper.findusercount());
 		return map;

@@ -1,7 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<!-- 相对路径设定（建议每个页面都加上，防止相对路径出错误） -->
+    <base th:href="${#httpServletRequest.getScheme()
+    +'://'
+    +#httpServletRequest.getServerName()
+    +':'
+    +#httpServletRequest.getServerPort()
+    +#httpServletRequest.getContextPath()
+    +'/'
+    }"
+    />
+<!--     相对路径设定结束 -->
 <title>Insert title here</title>
 </head>
 <body>

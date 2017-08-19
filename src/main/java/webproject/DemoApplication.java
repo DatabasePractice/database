@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
+import webproject.web.config.MyBatisConfig;
 import webproject.web.config.ShiroConfig;
-import webproject.web.config.mybatis.MyBatisConfig;
 
 
 @SpringBootApplication

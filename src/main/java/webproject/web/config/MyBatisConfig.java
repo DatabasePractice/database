@@ -1,4 +1,4 @@
-package webproject.web.config.mybatis;
+package webproject.web.config;
 
 import java.util.Properties;
 
