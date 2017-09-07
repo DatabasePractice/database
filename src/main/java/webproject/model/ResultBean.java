@@ -5,7 +5,7 @@ package webproject.model;
 * 返回的结果类
 * Controller ResponseBody返回的内容必须是该类，统一标准，方便前后端协调开发
 */
-public class ResultEntity<T> {
+public class ResultBean<T> {
 private Integer status;
 
 //    error_msg 错误信息，若status为0时，为success

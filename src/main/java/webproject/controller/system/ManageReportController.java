@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import webproject.controller.base.BaseController;
 import webproject.model.PageData;
+import webproject.model.ResultBean;
 
 /** 
 * @author hts
@@ -22,12 +23,12 @@ String toReport(){
 
 @RequestMapping("/autoFill")
 @ResponseBody
-PageData autoFill(){
+ResultBean autoFill(){
 	String[] test={"黄田生" ,"黄哈哈"};
-	PageData pd=new PageData();		
-	pd.put("feedback", test);
+	ResultBean<String[]> result=new ResultBean();
+	result.setData(test);
 	logger.debug("自动补全被调用");
-	return pd;
+	return result;
 }
 
 }

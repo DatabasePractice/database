@@ -22,7 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.Gson;
 
-import webproject.model.ResultEntity;
+import webproject.model.ResultBean;
 
 /** 
 * @author hts
@@ -61,7 +61,7 @@ public class LogAspect {
 	  public void handleException(JoinPoint jp,Throwable ex ) throws IOException{
 		  logger.error(jp.getSignature()+"方法出现异常");
 		  logger.error("系统异常",ex);
-		  ResultEntity<String> result=new ResultEntity<String>();
+		  ResultBean<String> result=new ResultBean<String>();
 		  result.setStatus(500);
 		  result.setMsg("程序内部错误:"+ex.getLocalizedMessage());
 		  HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
