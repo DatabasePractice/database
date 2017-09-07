@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 public class AdminUtil {
 	@Value("${privilege.superId}")
 	public static String superId;
-
+	@Value("${privilege.superRoleId}")
+	public static String superRoleId;
 	public static boolean isSuperById(String id) {
 		if (id.equals(superId)) {
 			return true;
@@ -20,4 +21,10 @@ public class AdminUtil {
 			return false;
 	}
 	
+	public static boolean isSuperByRoleId(String id) {
+		if (id.equals(superRoleId)) {
+			return true;
+		} else
+			return false;
+	}
 }

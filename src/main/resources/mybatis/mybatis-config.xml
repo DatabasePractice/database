@@ -6,9 +6,12 @@
 <typeAlias type="webproject.model.system.User" alias="User"/>
 <typeAlias type="webproject.model.system.MenuVo" alias="MenuVo"/>
 <typeAlias type="webproject.model.system.Role" alias="Role"/>
+<typeAlias type="webproject.model.PageData" alias="pd"/>
 </typeAliases>
 
 <mappers>
 <mapper resource="mapper/user.xml"/>
+<mapper resource="mapper/CustomMapper.xml"/>
+<mapper resource="mapper/PaymentMapper.xml"/>
 </mappers>
 </configuration>

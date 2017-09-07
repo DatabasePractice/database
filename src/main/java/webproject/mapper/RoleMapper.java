@@ -1,6 +1,7 @@
 package webproject.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -8,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import webproject.model.PageData;
 import webproject.model.system.MenuVo;
 import webproject.model.system.Role;
 
@@ -27,7 +29,8 @@ public interface RoleMapper {
 	 */
 	@Select("select * from er_role ")
 	List<Role> findAllRoles();
-
+	@Select("select * from er_role where rolename=#{rolename} ")
+	PageData findRoleByName(PageData pd);
 	@Select("select count(*) from er_role")
 	int findRoleCount();
 
@@ -35,18 +38,17 @@ public interface RoleMapper {
 	void deleteRole(String id);
 
 	@Insert("insert into er_role values(null,#{rolename})")
-	void insertRole(Role role);
+	void insertRole(PageData pd);
 
 	@Update("update  er_role set rolename=#{rolename} where roleid=#{roleid}")
-	void updateRole(Role role);
-
+	void updateRole(PageData pd);
 	/**
 	 * 授权相关
 	 */
 	@Select("select b.* from er_role_authorize a, er_menu b where a.roleid=#{id} and a.menuid= b.menuid")
 	List<MenuVo> findRoleAuthorize(String id);
-	@Insert("insert into er_role values(null,#{rolename})")
-	void insertMenu(Role role);
-
-
+	@Insert("insert into er_role_authorize(roleid,menuid) values(#{roleid},#{menuid})")
+	void insertRoleAuthorize(Map map);
+	@Delete("delete from er_role_authorize where roleid=#{roleid} and menuid=#{menuid}")
+	void deleteRoleAuthorize(Map map);
 }

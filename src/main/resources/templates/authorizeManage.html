@@ -110,7 +110,7 @@
 					title : '序号',
 				}, {
 					field : 'rolename',
-					title : '菜单名称',
+					title : '角色名称',
 				},
 				// {
 				//         	field:"action",
@@ -152,7 +152,7 @@
 			$remove.click(function() {
 				var ids = $.map($table.bootstrapTable('getSelections'),
 						function(row) {
-							return row.menuid;
+							return row.roleid;
 						});
 				if (confirm('确定要执行此操作吗?')) {
 					$.ajax({
@@ -168,7 +168,7 @@
 						success : function(result) {
 							alert(result.msg);
 							window.location.reload();
-							parent.location.reload();
+							
 
 						},
 						error : function(result) {
@@ -178,14 +178,36 @@
 				}
 
 			});
+			/*<![CDATA[*/
 			$save.click(function() {
-
+				var treeObj = $.fn.zTree.getZTreeObj("menuTree");
+				var nodes = treeObj.getChangeCheckedNodes();
+				var menuList="[";
+				for(var i=0;i<nodes.length;i++){
+					menuList+="{";
+					menuList=menuList+'"menuid":'+'"'+nodes[i].menuid+'"';
+					menuList+=",";
+					menuList=menuList+'"checked":'+'"'+nodes[i].checked+'"';
+					menuList+="}";
+						menuList+=",";
+					}
+				menuList=menuList.substring(0,menuList.length-1);
+				menuList+="]";
 				$.ajax({
 					cache : true,
 					type : "POST",
 					url : "/authorize/update.json",
 
-					data : $('#myform').serialize(),// 你的formid
+					data :{
+						"rolename":$("#rolename").val(),
+						"roleid":$("#roleid").val(),
+						"updatemode" :$("#updatemode").val(),
+						"menuList":menuList
+						
+					},
+						
+						
+					
 					async : false,
 					error : function(data) {
 						alert(data.msg);
@@ -195,12 +217,12 @@
 						alert(data.msg);
 						$('#modal').modal('hide');
 						window.location.reload();
-						parent.location.reload();
+					
 					}
 				});
 
 			});
-
+			 /*]]>*/
 			$("#add").click(function() {
 				//0为更新,1为新增
 				$("#updatemode").val(1);
