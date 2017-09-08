@@ -10,7 +10,7 @@
 </typeAliases>
 
 <mappers>
-<mapper resource="mapper/user.xml"/>
+<mapper resource="mapper/UserMapper.xml"/>
 <mapper resource="mapper/CustomMapper.xml"/>
 <mapper resource="mapper/PaymentMapper.xml"/>
 </mappers>

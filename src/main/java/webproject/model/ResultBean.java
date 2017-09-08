@@ -8,7 +8,7 @@ package webproject.model;
 public class ResultBean<T> {
 private Integer status;
 
-//    error_msg 错误信息，若status为0时，为success
+//    error_msg 错误信息，若status为200时，为正常，500时为服务器错误
 private String msg;
 
 //    content 返回体报文的出参，使用泛型兼容不同的类型

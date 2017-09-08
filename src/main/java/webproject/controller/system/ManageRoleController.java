@@ -20,6 +20,7 @@ import webproject.mapper.MenuMapper;
 import webproject.model.PageData;
 import webproject.model.system.User;
 import webproject.service.AuthorizeService;
+import webproject.service.MenuService;
 import webproject.utils.AdminUtil;
 import webproject.utils.MenuUtil;
 
@@ -36,8 +37,13 @@ public class ManageRoleController extends BaseController {
 	@Autowired
 	AuthorizeService authorizeService;
 	@Autowired
-	MenuMapper menumapper;
-
+	MenuService menuService;
+	
+	@RequestMapping("")
+	public String toAuthorize(Model model) {
+		return "authorizeManage";
+	}
+	
 	@RequestMapping("/init.json")
 	@ResponseBody
 	public Map<String, Object> tableinit(int limit, int offset, Model model) {
@@ -56,7 +62,7 @@ public class ManageRoleController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> zTreeinit(String roleid, Model model) {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		List list = menumapper.findAllMenus();
+		List list = menuService.findAllMenus();
 		List authlist = authorizeService.findRoleAuthorize(roleid);
 		List<Map> zNodes = MenuUtil.menuAuthorize(list, authlist);
 		map.put("zNodes", zNodes);
@@ -87,8 +93,13 @@ public class ManageRoleController extends BaseController {
 		PageData pageData = this.getPageData();
 		String updatemode= (String) pageData.get("updatemode");
 		String menuListstr= (String) pageData.get("menuList");
-		List<Map> menuList=new Gson().fromJson(menuListstr, List.class);	
 		Map<String, Object> map = new LinkedHashMap<String, Object>();	
+		if(menuListstr==null||menuListstr.equals("")) {
+			map.put("msg", "修改成功");
+		  return map;
+		}
+		List<Map> menuList=new Gson().fromJson(menuListstr, List.class);	
+		
 		// 更新操作
 		if (updatemode.equals("0")) {
 			try {

@@ -10,6 +10,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import webproject.model.PageData;
+import webproject.model.ResultBean;
 import webproject.utils.UuidUtil;
 
 /**
@@ -61,5 +62,11 @@ public class BaseController {
 		logger.info("end");
 		logger.info("");
 	}
-	
+	public static ResultBean responseMsg(String msg,int status,Object t){
+		ResultBean result = new ResultBean();
+		result.setData(t);
+		result.setMsg(msg);
+		result.setStatus(status);
+		return result;
+	}
 }

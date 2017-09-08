@@ -26,9 +26,11 @@ import webproject.controller.base.BaseController;
 import webproject.mapper.MenuMapper;
 import webproject.mapper.RoleMapper;
 import webproject.mapper.UserMapper;
+import webproject.model.ResultBean;
 import webproject.model.system.MenuVo;
 import webproject.model.system.Role;
 import webproject.model.system.User;
+import webproject.service.UserService;
 import webproject.utils.MenuUtil;
 import webproject.web.config.MyShiroRealm;
 
@@ -40,15 +42,9 @@ import webproject.web.config.MyShiroRealm;
  * 
  */
 @Controller
-public class MainController extends BaseController {
+public class LoginController extends BaseController {
 	@Autowired
-	UserMapper usermapper;
-	@Autowired
-	MenuMapper menumapper;
-	@Autowired
-	RoleMapper rolemapper;
-	public final Logger logger = LoggerFactory.getLogger(this.getClass());
-
+	UserService userService;
 	@RequestMapping("/index")
 	public String index(Model model) {
 		Session session = SecurityUtils.getSubject().getSession();
@@ -57,7 +53,7 @@ public class MainController extends BaseController {
 		user.setAccount(username);
 		// List<MenuVo> parentlist=usermapper.findparentmenu(user);
 		// List<MenuVo> sonlist=usermapper.findsonmenu(user);
-		List<MenuVo> list = usermapper.findmenus(user);
+		List<MenuVo> list = userService.findmenus(user);
 		for (MenuVo menua : list) {
 			for (MenuVo menub : list) {
 				if (menua.getParent().equals(menub.getMenuid())) {
@@ -72,11 +68,11 @@ public class MainController extends BaseController {
 		else model.addAttribute("menuHead", new MenuVo());
 		
 		//采用实体类导致与前端代码冲突，不好的写法
-		Role role = usermapper.findRole(user);
+		Role role = userService.findRole(user);
 		if(role==null) 
 		role=new Role();
 		model.addAttribute("role", role);
-		List <User> users=usermapper.findUser(user);
+		List <User> users=userService.findUser(user);
 		User user2=users.get(0);
 		model.addAttribute("name", user2.getName());
 		return "index";
@@ -102,20 +98,10 @@ public class MainController extends BaseController {
 
 	@RequestMapping("/doregister")
 	@ResponseBody
-	public Map<String, Object> doregister(Model model, String account, String password) {
+	public ResultBean doregister(Model model, String account, String password) {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		User user = new User(null, account, password, null, null);
-		if (usermapper.findsameaccount(user) == 0) {
-			usermapper.insertUser(user);
-			UsernamePasswordToken token = new UsernamePasswordToken(user.getAccount(), user.getPassword());
-			SecurityUtils.getSubject().login(token);
-			map.put("status", 200);
-			map.put("massage", "登陆成功");
-		} else {
-			map.put("status", 500);
-			map.put("message", "账号已被注册");
-		}
-		return map;
+		return userService.doLogin(user);
 	}
 
 	@RequestMapping("/dologin")
@@ -140,20 +126,4 @@ public class MainController extends BaseController {
 		return map;
 	}
 
-	@RequestMapping("/menu")
-	public String menu(Model model) {
-		List list = menumapper.findAllMenus();
-		MenuUtil.MenuProcess(list);
-		model.addAttribute("menus", list);
-
-		return "menumanage";
-
-	}
-
-	@RequestMapping("/authorize")
-	public String toAuthorize(Model model) {
-
-		return "authorizeManage";
-
-	}
 }

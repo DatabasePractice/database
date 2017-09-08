@@ -23,8 +23,11 @@ import ch.qos.logback.classic.Logger;
 import webproject.controller.base.BaseController;
 import webproject.mapper.RoleMapper;
 import webproject.mapper.UserMapper;
+import webproject.model.ResultBean;
 import webproject.model.system.Role;
 import webproject.model.system.User;
+import webproject.service.AuthorizeService;
+import webproject.service.UserService;
 import webproject.utils.AdminUtil;
 
 /**
@@ -38,13 +41,13 @@ import webproject.utils.AdminUtil;
 @RequestMapping("system")
 public class ManageUserConroller extends BaseController {
 	@Autowired
-	UserMapper mapper;
+	UserService userService;
 	@Autowired
-	RoleMapper roleMapper;
+	AuthorizeService authorizeService;
 	
 	@RequestMapping("")
 	public String toUserTable(Model model) {
-		List<Role> rolelist=roleMapper.findAllRoles();
+		List<Role> rolelist=authorizeService.findAllRoles();
 		model.addAttribute("rolelist",rolelist);
 		return "usertable";
 	}
@@ -56,66 +59,25 @@ public class ManageUserConroller extends BaseController {
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		int pageNum = offset / limit + 1;
 		PageHelper.startPage(pageNum, limit);
-		List list = mapper.findUserAndRole(null);
+		List list = userService.findUserAndRole(null);
 		map.put("rows", list);
-		map.put("total", mapper.findusercount());
+		map.put("total", userService.findusercount());
 		return map;
 	}
 
 	@RequestMapping("/update")
 	@ResponseBody
 	@RequiresRoles("super")
-	public Map<String, Object> update(Model model, String name, String account, int updatemode, String password,
-			String role, String id) {
-
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		if (AdminUtil.isSuperById(id)) {
-			map.put("err", "超级管理员不能修改");
-			return map;
-		}
-
-		// 更新操作
-		if (updatemode == 0) {
-			User user = new User(name, account, password, role, id);
-			try {
-				mapper.updateUser(user);
-			} catch (Exception e) {
-				System.out.println(e.toString());
-				map.put("err", e.toString());
-			}
-			map.put("msg", "修改成功");
-		}
-		// 增加操作
-		if (updatemode == 1) {
-			User user = new User(name, account, password, role, null);
-			try {
-				mapper.insertUser(user);
-			} catch (Exception e) {
-				System.out.println(e.toString());
-				map.put("err", e.toString());
-			}
-			map.put("msg", "新增成功");
-		}
-
-		return map;
+	public ResultBean update(Model model, String name, String account, int updatemode, String password,
+			String role, String id) throws Exception {
+		User user = new User(name, account, password, role, id);
+		return userService.updateOrInsert(user, updatemode);
 	}
 
 	@RequestMapping("/delete")
 	@ResponseBody
 	@RequiresRoles("super")
-	public Map<String, Object> delete(Model model, @RequestParam("ids[]") List<String> ids) {
-
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		for (int i = 0; i < ids.size(); i++) {
-			String id = ids.get(i);
-			if (AdminUtil.isSuperById(id)) {
-				map.put("msg", "超级管理员不能删除");
-				break;
-			}
-
-			mapper.deleteUser(id);
-		}
-		map.put("msg", "删除成功");
-		return map;
+	public ResultBean delete(Model model, @RequestParam("ids[]") List<String> ids) throws Exception {
+		return userService.BatchDeleteUser(ids);
 	}
 }

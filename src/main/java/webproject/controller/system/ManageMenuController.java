@@ -1,4 +1,4 @@
-package webproject.controller.system;
+ package webproject.controller.system;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 
+import webproject.controller.base.BaseController;
 import webproject.mapper.MenuMapper;
 import webproject.mapper.UserMapper;
+import webproject.model.ResultBean;
 import webproject.model.system.MenuVo;
 import webproject.model.system.User;
+import webproject.service.MenuService;
 import webproject.utils.AdminUtil;
 import webproject.utils.MenuUtil;
 
@@ -32,89 +35,53 @@ import webproject.utils.MenuUtil;
  */
 @Controller
 @RequestMapping("/menu")
-public class ManageMenuController {
+public class ManageMenuController extends BaseController {
 	@Autowired
-	MenuMapper mapper;
-	Logger logger = LoggerFactory.getLogger(this.getClass());
+	MenuService menuService;
+
+	@RequestMapping("")
+	public String menu(Model model) {
+		List list = menuService.findAllMenus();
+		model.addAttribute("menus", list);
+		return "menumanage";
+	}
 
 	@RequestMapping("/init.json")
 	@ResponseBody
 	public Map<String, Object> tableinit(int limit, int offset, Model model) {
-
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		int pageNum = offset / limit + 1;
-		PageHelper.startPage(pageNum, limit);
-
-		List pagelist = mapper.findAllMenus();
-		MenuUtil.MenuProcess(pagelist);
+		List pagelist = menuService.findAllMenusByPage(limit,offset);
 		map.put("rows", pagelist);
-		map.put("total", mapper.findMenuCount());
-		logger.info("table init");
+		map.put("total", menuService.findMenuCount());
 		return map;
 	}
 
 	@RequestMapping("/delete.json")
 	@ResponseBody
 	@RequiresRoles("super")
-	public Map<String, Object> delete(Model model, @RequestParam("ids[]") List<String> ids) {
+	public ResultBean delete(Model model, @RequestParam("ids[]") List<String> ids) throws Exception {
 
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		map.put("msg", "删除成功");
+		ResultBean result = new ResultBean();
+		result.setStatus(200);
 		for (int i = 0; i < ids.size(); i++) {
 			String id = ids.get(i);
-			try {
-				mapper.deleteMenu(id);
-			} catch (Exception e) {
-              logger.warn(e.toString());
-              map.put("msg", "不是叶子节点的menu不可删除，请先删除其子节点");
+			if (!menuService.deleteMenu(id)) {
+				result.setStatus(500);
+				result.setMsg(result.getMsg() + "\nid为" + id + "的菜单不是叶子节点不可删除，请先删除其子节点");
 			}
 		}
-		
-		return map;
+		if (result.getStatus() == 200)
+			result.setMsg("删除成功");
+		return result;
 	}
 
 	@RequestMapping("/update.json")
 	@ResponseBody
 	@RequiresRoles("super")
-	public Map<String, Object> update(Model model, int updatemode, MenuVo menuVo) {
-
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		try {
-			MenuUtil.insertPromise(menuVo,mapper);
-		} catch (Exception e) {
-			map.put("msg", e.getMessage());
-			e.printStackTrace();
-			return map;
-		}
-		// 更新操作
-		if (updatemode == 0) {
-
-			try {
-
-				mapper.updateMenu(menuVo);
-				map.put("msg", "修改成功");
-			} catch (Exception e) {
-				logger.warn(e.getMessage());
-				map.put("msg", e.getMessage());
-				e.printStackTrace();
-
-			}
-		}
-		// 增加操作
-		if (updatemode == 1) {
-			
-			try {
-				mapper.insertMenu(menuVo);
-				map.put("msg", "新增成功");
-			} catch (Exception e) {
-				logger.warn(e.getMessage());
-				map.put("err", e.getMessage());
-				e.printStackTrace();
-			}
-			
-		}
-
-		return map;
+	public ResultBean update(Model model,  MenuVo menuVo,int updatemode) throws Exception {
+		ResultBean result = new ResultBean();
+		menuService.updateOrInsert(menuVo,updatemode);
+		return responseMsg("更新成功",200,null);
 	}
 
 }
