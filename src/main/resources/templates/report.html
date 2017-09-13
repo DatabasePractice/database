@@ -170,11 +170,11 @@
 							'dataType' : 'json', //返回数据类型
 							'type' : 'POST', //请求类型
 							'success' : function(data) {
-								if (data.feedback.length) {
+								if (data.data.length) {
 									//遍历data，添加到自动完成区
 									$
 											.each(
-													data.feedback,
+													data.data,
 													function(index, term) {
 														//创建li标签,添加到下拉列表中
 														$('<li></li>')

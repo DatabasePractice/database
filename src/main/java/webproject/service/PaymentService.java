@@ -14,5 +14,5 @@ import webproject.model.PageData;
 */
 @Service
 public interface PaymentService {
-
+	PageData findAll(PageData pd);
 }

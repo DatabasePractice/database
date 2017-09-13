@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 相对路径设定（建议每个页面都加上，防止相对路径出错误） -->
+<base
+	th:href="${#httpServletRequest.getScheme()
+    +'://'
+    +#httpServletRequest.getServerName()
+    +':'
+    +#httpServletRequest.getServerPort()
+    +#httpServletRequest.getContextPath()
+    +'/'
+    }" />
+<!--     相对路径设定结束 -->
+
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet" />
+<link href="css/font-awesome.css?v=4.4.0" rel="stylesheet" />
+<link href="css/animate.css" rel="stylesheet" />
+<link href="css/style.css?v=4.1.0" rel="stylesheet" />
+<link href="css/plugins/bootstrap-table/bootstrap-table.min.css"
+	rel="stylesheet" />
+<title>搜索词自动完成</title>
+<style type="text/css">
+#search {
+	text-align: right;
+	position: relative;
+}
+
+.autocomplete {
+	border: 1px solid #9ACCFB;
+	background-color: white;
+	text-align: left;
+}
+
+.clickable {
+	cursor: default;
+}
+
+.highlight {
+	background-color: #9ACCFB;
+}
+</style>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>交费记录查询</h5>
+						<div class="ibox-tools">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a> <a class="dropdown-toggle" data-toggle="dropdown"
+								href="tabs_panels.html#"> <i class="fa fa-wrench"></i>
+							</a>
+						</div>
+					</div>
+
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="searchBox">
+							<div class="row">
+								<div class="col-sm-4">
+									<div id="search" class="form-group">
+										<label class="col-sm-3 control-label" for="search-text">顾客ID:</label>
+										<div class="col-sm-9">
+											<input class="form-control" placeholder="请输入顾客ID"
+												id="CUSTOM_ID" name="CUSTOM_ID" />
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div id="search" class="form-group">
+										<label class="col-sm-3 control-label" for="search-text">顾客电话号码:</label>
+										<div class="col-sm-9">
+											<input class="form-control" placeholder="请输入顾客电话号码" id="TEL"
+												name="TEL" />
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label class="col-sm-3 control-label">缴费时间</label>
+										<div class="col-sm-9">
+											<input placeholder="开始时间" class="form-control layer-date"
+												id="start" name="BEGINTIME"
+												onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
+											<input placeholder="结束时间" class="form-control layer-date"
+												id="end" name="ENDTIME"
+												onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
+										</div>
+									</div>
+								</div>
+
+							</div>
+					
+						</form>
+							<div class="row">
+								<div class="col-sm-12">
+									<button class="btn" id="searchButton">搜索</button>
+								</div>
+							</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		<table id="tableList" class="table table-striped"></table>
+	</div>
+
+	<script src="js/jquery.min.js?v=2.1.4"></script>
+	<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+	<!-- 自定义js -->
+	<script src="js/content.js?v=1.0.0"></script>
+
+	<!-- jQuery Validation plugin javascript-->
+	<script src="js/plugins/validate/jquery.validate.min.js"></script>
+	<script src="js/plugins/validate/messages_zh.min.js"></script>
+	<script src="js/demo/form-validate-demo.js"></script>
+	<script src="js/plugins/layer/laydate/laydate.js"></script>
+	<script src="js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	<script
+		src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+
+			$('#tableList').bootstrapTable({
+				columns : [ {
+					field : 'PAY_ID',
+					title : '序号',
+				}, {
+					field : 'CUSTOM_ID',
+					title : '客户ID',
+				}, {
+					field : 'TIME',
+					title : '缴费时间',
+	                formatter: function (value, row, index) {
+	                    return changeDateFormat(value)
+	                }
+				}, {
+					field : 'PAY_METHOD',
+					title : '缴费方法',
+				}, {
+					field : 'QD',
+					title : '渠道',
+				}, {
+					field : 'EMPLOYEE_ID',
+					title : '营业员ID',
+				}, {
+					field : 'AMOUNT',
+					title : '缴费金额',
+				}
+				// {
+				//         	field:"action",
+				//         	formatter:"actionFormatter",
+				//         	events:"actionEvents",
+				//         	title: '授权'
+				//         }
+
+				],//页面需要展示的列，后端交互对象的属性
+				pagination : true,//开启分页
+				sidePagination : 'server',//服务器端分页
+				pageNumber : 1,//默认加载页
+				pageSize : 20,//每页数据
+				async : false,
+				pageList : [ 5, 50, 100, 500 ],//可选的每页数据
+				showRefresh : false,
+				queryParams : function(params) {
+					var queryParams = {
+						limit : params.limit,
+						offset : params.offset
+					}
+					$('#searchBox').find('input[name]').each(function() {
+						queryParams[$(this).attr('name')] = $(this).val();
+					});
+					return queryParams;
+				},//请求服务器数据时的参数
+				url:"/payment/userTableInit"
+			});
+			
+			$("#searchButton").click(function(){
+				$('#tableList').bootstrapTable('refresh',{url:"/payment/userTableInit"});	
+				
+			});
+		});
+		/*<![CDATA[*/
+        function changeDateFormat(cellval) {
+            if (cellval != null) {
+            	var date = new Date(parseInt(cellval));
+            	  var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                  var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                  var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                var milliseconds = date.getMilliseconds();
+                return date.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+            }
+        }
+        /*]]>*/
+	</script>
+</body>
+
+</html>

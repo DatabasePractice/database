@@ -16,7 +16,7 @@
 		QD,	
 		EMPLOYEE_ID,	
 		AMOUNT,	
-		
+		HALL_ID
 	</sql>
 	
 	<!-- 字段值 -->
@@ -28,7 +28,7 @@
 		#{QD},	
 		#{EMPLOYEE_ID},	
 		#{AMOUNT},	
-		
+		#{HALL_ID},	
 	</sql>
 	
 	<!-- 新增-->
@@ -62,7 +62,7 @@
 			QD = #{QD},
 			EMPLOYEE_ID = #{EMPLOYEE_ID},
 			AMOUNT = #{AMOUNT},
-		
+		    HALL_ID=#{HALL_ID}
 		where 
 		PAY_ID = #{PAY_ID}
 	</update>
@@ -95,7 +95,7 @@
 <!-- 		XML中不允许出现 >或< 需要加<![CDATA[]]> 时间范围检索-->
 		
 		<if test="BEGINTIME!= null and BEGINTIME != ''">
-		<![CDATA[	and  TIME>=BEGINTIME	]]> 		
+		<![CDATA[	and  TIME>=#{BEGINTIME}	]]> 		
 		</if>
 		<if test="EMDTIME!= null and ENDTIME != ''">
 		<![CDATA[	and  TIME <= #{ENDTIME}		]]>		
@@ -113,10 +113,13 @@
 		<if test="AMOUNT!= null and AMOUNT != ''">
 			and  AMOUNT = #{AMOUNT}				
 		</if>
+		<if test="HALL_ID != null and HALL_ID != ''">
+			and  HALL_ID = #{HALL_ID}				
+		</if>
 	</select>
 	
 	
-	<select id="countOfdatalistPage" parameterType="pd" resultType="pd">
+	<select id="countOfdatalistPage" parameterType="pd" resultType="int">
 		select
 		count(*)
 		from 
@@ -133,7 +136,7 @@
 <!-- 		XML中不允许出现 >或< 需要加<![CDATA[]]> 时间范围检索-->
 		
 		<if test="BEGINTIME!= null and BEGINTIME != ''">
-		<![CDATA[	and  TIME>=BEGINTIME	]]> 		
+		<![CDATA[	and  TIME>=#{BEGINTIME}	]]> 		
 		</if>
 		<if test="EMDTIME!= null and ENDTIME != ''">
 		<![CDATA[	and  TIME <= #{ENDTIME}		]]>		
@@ -150,6 +153,9 @@
 		</if>
 		<if test="AMOUNT!= null and AMOUNT != ''">
 			and  AMOUNT = #{AMOUNT}				
+		</if>
+		<if test="HALL_ID != null and HALL_ID != ''">
+			and  HALL_ID = #{HALL_ID}				
 		</if>
 	</select>
 	

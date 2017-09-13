@@ -123,5 +123,49 @@ public class PageData extends HashMap implements Map{
 		// TODO Auto-generated method stub
 		return map.values();
 	}
-	
+	public int getAsInt(String key) {
+		// TODO Auto-generated method stub
+		int result;
+		try{
+			result=(int)map.get(key);
+		}
+		catch(ClassCastException e){
+		result=Integer.parseInt((String) map.get(key));	
+		}
+		return result;
+	}
+//	判断pageData key内容是否为空
+	public boolean judgeEmpty(String key) {
+		// TODO Auto-generated method stub
+		if(map.get(key)==null||map.get(key).equals(""))
+			return true;
+		else return false;
+	}
+
+	public String toString() {
+		// TODO Auto-generated method stub
+		Iterator entries =  map.entrySet().iterator(); 
+		Map.Entry entry;
+		String out="";
+		String name = "";  
+		String value = "";  
+		while (entries.hasNext()) {
+			entry = (Map.Entry) entries.next(); 
+			name = (String) entry.getKey(); 
+			Object valueObj = entry.getValue(); 
+			if(null == valueObj){ 
+				value = ""; 
+			}else if(valueObj instanceof String[]){ 
+				String[] values = (String[])valueObj;
+				for(int i=0;i<values.length;i++){ 
+					 value = values[i] + ",";
+				}
+				value = value.substring(0, value.length()-1); 
+			}else{
+				value = valueObj.toString(); 
+			}
+			out+=name+":"+value+"\t";
+	}
+		return out;
+	}
 }

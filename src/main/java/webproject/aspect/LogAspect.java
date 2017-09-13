@@ -22,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.Gson;
 
+import webproject.model.PageData;
 import webproject.model.ResultBean;
 
 /** 
@@ -46,6 +47,7 @@ public class LogAspect {
 			   logger.debug("请求方式:"+request.getMethod());
 			   logger.debug("请求类方法:"+joinPoint.getSignature());
 			   logger.debug("请求类方法参数:"+ Arrays.toString(joinPoint.getArgs()));
+			   logger.debug("请求参数:"+new PageData(request).toString());
 			   logger.debug("===============请求内容===============");			  
 	  }
 	  
