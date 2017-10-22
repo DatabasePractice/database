@@ -35,7 +35,6 @@ import webproject.model.ResultBean;
 public class LogAspect {
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	Gson gson=new Gson();
-	  @Pointcut("execution(* webproject.controller..*(..))")  
 	    public void controllerMethodPointcut(){}  
 	  @Before("controllerMethodPointcut()") 
 		  public void methodBefore(JoinPoint joinPoint){
