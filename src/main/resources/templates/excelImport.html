@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 相对路径设定（建议每个页面都加上，防止相对路径出错误） -->
+<base
+	th:href="${#httpServletRequest.getScheme()
+    +'://'
+    +#httpServletRequest.getServerName()
+    +':'
+    +#httpServletRequest.getServerPort()
+    +#httpServletRequest.getContextPath()
+    +'/'
+    }" />
+<!--     相对路径设定结束 -->
+
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet" />
+<link href="css/font-awesome.css?v=4.4.0" rel="stylesheet" />
+<link href="css/animate.css" rel="stylesheet" />
+<link href="css/style.css?v=4.1.0" rel="stylesheet" />
+<title>搜索词自动完成</title>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>excel账单导入</h5>
+						<div class="ibox-tools">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a> <a class="dropdown-toggle" data-toggle="dropdown"
+								href="tabs_panels.html#"> <i class="fa fa-wrench"></i>
+							</a>
+						</div>
+					</div>
+
+					<div class="ibox-content">
+						<div class="row">
+							<label class="col-sm-2 control-label">excel账单</label>
+							<div class="col-sm-8">
+								<input id="excel" name="excel" class="form-control filestyle" type="file" data-btnClass="btn-primary"/>
+								
+							</div>
+							<div class="col-sm-2">
+							<input type="button" class="btn btn-success" value="上传" onclick="upload()" />  
+							</div>
+				
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery.min.js?v=2.1.4"></script>
+	<script src="js/bootstrap.min.js?v=3.3.6"></script>
+	<script src="js/ajaxfileupload.js?v=1.0.0"></script>
+<script src="js/bootstrap-filestyle.min.js?v=1.0.0"></script>
+	<!-- 自定义js -->
+	<script src="js/content.js?v=1.0.0"></script>
+
+	<!-- jQuery Validation plugin javascript-->
+	<script src="js/plugins/validate/jquery.validate.min.js"></script>
+	<script src="js/plugins/validate/messages_zh.min.js"></script>
+	<script src="js/demo/form-validate-demo.js"></script>
+	<script src="js/plugins/layer/laydate/laydate.js"></script>
+
+	<script type="text/javascript">
+		var upload = function() {
+			 var path = document.getElementById("excel").value;
+	            if ($.trim(path) == "") { alert("请选择要上传的文件"); return; }
+	            console.log("test");
+
+	            var result_msg = "";
+	            $.ajaxFileUpload({
+	                url: '/bill/excelImport/doImport',  //这里是服务器处理的代码
+	                type: 'post',
+	                secureuri: false, //一般设置为false
+	                fileElementId: 'excel', // 上传文件的id、name属性名
+	                dataType: 'json', //返回值类型，一般设置为json、application/json
+	                data: {}, //传递参数到服务器
+	                success: function (data, status) {
+	                        if (data.status=="200") {
+	                            alert("文件成功处理完成!" );
+	                        } else {
+	                            alert("文件处理出错！原因："+data.msg);
+	                        }
+	                },
+	                error: function (data, status, e) {
+	                    alert("错误：上传组件错误，请检察网络!");
+	                }
+	            });
+		};
+	</script>
+</body>
+
+</html>
