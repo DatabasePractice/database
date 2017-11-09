@@ -80,4 +80,12 @@ public class ManageUserConroller extends BaseController {
 	public ResultBean delete(Model model, @RequestParam("ids[]") List<String> ids) throws Exception {
 		return userService.BatchDeleteUser(ids);
 	}
+	
+	@RequestMapping("/updatePassword")
+	@ResponseBody
+	public ResultBean updatePassword(Model model, String password,String oldpassword) throws Exception {
+		String username=getUsername();
+		
+		return userService.updatePassword(username, password,oldpassword);
+	}
 }

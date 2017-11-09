@@ -3,6 +3,7 @@ package webproject.controller.base;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -69,4 +70,10 @@ public class BaseController {
 		result.setStatus(status);
 		return result;
 	}
+	public static String getUsername(){
+		if(SecurityUtils.getSubject()!=null)
+		return  SecurityUtils.getSubject().getPrincipal().toString();
+		else return null;
+	}
+	
 }

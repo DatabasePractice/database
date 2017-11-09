@@ -14,6 +14,11 @@ private String msg;
 //    content 返回体报文的出参，使用泛型兼容不同的类型
 private T data;
 
+public ResultBean(){
+this.status=200;	
+this.msg="正常";	
+}
+
 public Integer getStatus() {
     return status;
 }

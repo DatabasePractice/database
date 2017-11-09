@@ -29,5 +29,7 @@ public interface UserService {
 	ResultBean updateOrInsert(User user, int updatemode) throws Exception;
 
 	ResultBean BatchDeleteUser(List<String> ids) throws Exception;
+	
+ResultBean updatePassword(String  username,String password,String oldpassword) throws Exception;
 
 }
