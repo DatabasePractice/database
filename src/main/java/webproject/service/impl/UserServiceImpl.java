@@ -125,4 +125,20 @@ public class UserServiceImpl implements UserService {
 		}
         return result;
 	}
+
+	@Override
+	public ResultBean updatePassword(String username, String password,String oldpassword) throws Exception {
+		// TODO Auto-generated method stub
+		ResultBean result= new ResultBean();
+		User user=new User(null,username,password,null,null);
+		User olduser=usermapper.findUser(user).get(0);
+		if(!olduser.getPassword().equals(oldpassword)){
+		result.setMsg("旧密码不正确，修改失败");
+		result.setStatus(500);
+	    return result;
+		}
+		usermapper.updatePasswordByAccount(user);
+		result.setMsg("修改成功");
+		return result;
+	}
 }

@@ -28,4 +28,5 @@ List<MenuVo> findmenus(User user);
 int findsameaccount(User user);
 int findusercount();
 void deleteUser(String id);
+void updatePasswordByAccount(User user);
 }
