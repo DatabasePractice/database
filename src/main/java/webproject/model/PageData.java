@@ -123,5 +123,18 @@ public class PageData extends HashMap implements Map{
 		// TODO Auto-generated method stub
 		return map.values();
 	}
+
+		public int getAsInt(String key) {
+			// TODO Auto-generated method stub
+			int result;
+			try{
+				result=(int)map.get(key);
+			}
+			catch(ClassCastException e){
+			result=Integer.parseInt((String) map.get(key));	
+			}
+			return result;
+		}
+	
 	
 }
