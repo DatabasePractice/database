@@ -27,16 +27,16 @@ import webproject.service.PaymentService;
 public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	PaymentMapper payDao;
-	
-	public PageData findAll(PageData pd){
-		int offset= pd.getAsInt("offset");
-		int limit= pd.getAsInt("limit");
+
+	public PageData findAll(PageData pd) {
+		int offset = pd.getAsInt("offset");
+		int limit = pd.getAsInt("limit");
 		int pageNum = offset / limit + 1;
-		PageData returnpd=new PageData();
+		PageData returnpd = new PageData();
 		PageHelper.startPage(pageNum, limit);
-		returnpd.put("rows",payDao.datalistPage(pd));
-		int totalcount=payDao.countOfdatalistPage(pd);
-	returnpd.put("total",totalcount);
+		returnpd.put("rows", payDao.datalistPage(pd));
+		int totalcount = payDao.countOfdatalistPage(pd);
+		returnpd.put("total", totalcount);
 		return returnpd;
 	}
 

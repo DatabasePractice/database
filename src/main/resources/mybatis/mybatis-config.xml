@@ -8,7 +8,6 @@
 <typeAlias type="webproject.model.system.Role" alias="Role"/>
 <typeAlias type="webproject.model.PageData" alias="pd"/>
 </typeAliases>
-
 <mappers>
 <mapper resource="mapper/UserMapper.xml"/>
 <mapper resource="mapper/CustomMapper.xml"/>
