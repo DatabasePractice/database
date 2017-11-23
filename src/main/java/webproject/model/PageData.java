@@ -169,8 +169,6 @@ public class PageData extends HashMap implements Map{
 		return out;
 	}
 
-		public int getAsInt(String key) {
-			}
 	
 	
 }
