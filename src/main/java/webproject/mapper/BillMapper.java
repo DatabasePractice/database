@@ -1,5 +1,7 @@
 package webproject.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import webproject.model.PageData;
@@ -12,4 +14,5 @@ import webproject.model.PageData;
 @Mapper
 public interface BillMapper {
 void save(PageData pd);
+List<PageData> queryProjectPage(PageData pd);
 }

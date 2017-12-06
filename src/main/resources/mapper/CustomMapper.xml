@@ -4,15 +4,16 @@
 	
 	<!--表名 -->
 	<sql id="tableName">
-		CUSTOM
+		CUSTOM,HALL,CHINA
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
 		CUSTOM_ID,	
 		TEL,	
-		NAME,	
-		POSITION,	
+		china.NAME as HALL_LOCATION ,
+		HALL_NAME,			
+		CUSTOM.NAME as NAME,	
 		BALANCE,	
 		
 	</sql>
@@ -28,48 +29,36 @@
 	</sql>
 	
 	<!-- 新增-->
-	<insert id="save" parameterType="pd">
-		insert into 
-	<include refid="tableName"></include>
-		(
-	<include refid="Field"></include>
-		) values (
-	<include refid="FieldValue"></include>
-		)
-	</insert>
-	
-	<!-- 删除-->
-	<delete id="delete" parameterType="pd">
-		delete from
-		<include refid="tableName"></include>
-		where 
-			CUSTOM_ID = #{CUSTOM_ID}
-	</delete>
-	
-	<!-- 修改 -->
-	<update id="edit" parameterType="pd">
-		update
-		<include refid="tableName"></include>
-		set 
-			CUSTOM_ID = #{CUSTOM_ID},
-			TEL = #{TEL},
-			NAME = #{NAME},
-			POSITION = #{POSITION},
-			BALANCE = #{BALANCE},
+<!-- 	<insert id="save" parameterType="pd"> -->
+<!-- 		insert into  -->
+<!-- 	<include refid="tableName"></include> -->
+<!-- 		( -->
+<!-- 	<include refid="Field"></include> -->
+<!-- 		) values ( -->
+<!-- 	<include refid="FieldValue"></include> -->
+<!-- 		) -->
+<!-- 	</insert> -->	
+<!-- 	-->
+<!-- 	<delete id="delete" parameterType="pd"> -->
+<!-- 		delete from -->
+<!-- 		<include refid="tableName"></include> -->
+<!-- 		where  -->
+<!-- 			CUSTOM_ID = #{CUSTOM_ID} -->
+<!-- 	</delete> -->	
+<!--  修改-->
+<!-- 	<update id="edit" parameterType="pd"> -->
+<!-- 		update -->
+<!-- 		<include refid="tableName"></include> -->
+<!-- 		set  -->
+<!-- 			CUSTOM_ID = #{CUSTOM_ID}, -->
+<!-- 			TEL = #{TEL}, -->
+<!-- 			NAME = #{NAME}, -->
+<!-- 			POSITION = #{POSITION}, -->
+<!-- 			BALANCE = #{BALANCE}, -->
 		
-		where 
-		CUSTOM_ID = #{CUSTOM_ID}
-	</update>
-	
-	<!-- 通过ID获取数据 -->
-	<select id="findById" parameterType="pd" resultType="pd">
-		select 
-		<include refid="Field"></include>
-		from 
-		<include refid="tableName"></include>
-		where 
-			CUSTOM_ID = #{CUSTOM_ID}
-	</select>
+<!-- 		where  -->
+<!-- 		CUSTOM_ID = #{CUSTOM_ID} -->
+<!-- 	</update>	 -->
 	
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="pd" resultType="pd">
@@ -78,21 +67,12 @@
 		from 
 		<include refid="tableName"></include>
 		where 1=1
-		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
-			and
-				
+		<if test="TEL != null and TEL != ''"><!-- 关键词检索 -->
+		and 	CUSTOM.TEL=#{TEL}				
 		</if>
+		and custom.HALL_ID=hall.HALL_ID and hall.HALL_LOCATION=china.ID
 	</select>
-	
-	<!-- 列表(全部) -->
-	<select id="listAll" parameterType="pd" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from 
-		<include refid="tableName"></include>
-	</select>
-	
-	
+		
 	
 	
 </mapper>

@@ -38,5 +38,16 @@
 		)
 	</insert>
 	
+	<select id="queryProjectPage" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		
+		from 
+	
+		<include refid="tableName"></include>
+	
+		where bill_id=1
+	</select>
+	
 	
 </mapper>

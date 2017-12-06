@@ -24,13 +24,7 @@ import webproject.service.BillQueryService;
 import webproject.service.PaymentService;
 import webproject.service.UserService;
 
-/**
- *  
- * 
- * @author hts
- * @version date：2017年9月10日 下午6:33:01 
- * 
- */
+
 @Controller
 @RequestMapping("billquery")
 public class BillQueryController extends BaseController {
@@ -39,8 +33,16 @@ public class BillQueryController extends BaseController {
 
 	@RequestMapping("")
 	public String toPaymentTable(Model model) {
-
 		return "billquery";
+	}
+	
+	@RequestMapping("/TableInit")
+	@ResponseBody
+	public Map<String, Object> tableinit() {
+		PageData pd = this.getPageData();
+		if (pd.judgeEmpty("CUSTOM_ID")&&pd.judgeEmpty("PROJECT"))
+			return new PageData();
+		return billqueryService.queryProject(pd);
 	}
 
 

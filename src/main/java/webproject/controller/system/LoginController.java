@@ -26,11 +26,13 @@ import webproject.controller.base.BaseController;
 import webproject.mapper.MenuMapper;
 import webproject.mapper.RoleMapper;
 import webproject.mapper.UserMapper;
+import webproject.model.PageData;
 import webproject.model.ResultBean;
 import webproject.model.system.MenuVo;
 import webproject.model.system.Role;
 import webproject.model.system.User;
 import webproject.service.UserService;
+import webproject.service.UserphotoService;
 import webproject.utils.MenuUtil;
 import webproject.web.config.MyShiroRealm;
 
@@ -45,8 +47,10 @@ import webproject.web.config.MyShiroRealm;
 public class LoginController extends BaseController {
 	@Autowired
 	UserService userService;
+	@Autowired
+	UserphotoService userphotoService;
 	@RequestMapping("/index")
-	public String index(Model model) {
+	public String index(Model model) throws Exception {
 		Session session = SecurityUtils.getSubject().getSession();
 		String username = SecurityUtils.getSubject().getPrincipal().toString();
 		User user = new User();
@@ -72,9 +76,15 @@ public class LoginController extends BaseController {
 		if(role==null) 
 		role=new Role();
 		model.addAttribute("role", role);
+		
 		List <User> users=userService.findUser(user);
 		User user2=users.get(0);
 		model.addAttribute("name", user2.getName());
+		PageData pd=this.getPageData();
+		pd.put("USERNAME", this.getUsername());
+		PageData returnpd=userphotoService.findById(pd);
+		if(returnpd!=null&&!returnpd.judgeEmpty("PHOTO1"))
+		model.addAttribute("avatarUrl", returnpd.getString("PHOTO1"));
 		return "index";
 	}
 

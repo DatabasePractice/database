@@ -13,5 +13,6 @@
 <mapper resource="mapper/CustomMapper.xml"/>
 <mapper resource="mapper/PaymentMapper.xml"/>
 <mapper resource="mapper/BillMapper.xml"/>
+<mapper resource="mapper/UserPhotoMapper.xml"/>
 </mappers>
 </configuration>

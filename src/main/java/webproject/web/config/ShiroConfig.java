@@ -52,6 +52,7 @@ public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityMana
 	fMap.put("/js/*", "anon");
 	fMap.put("/css/*", "anon");
 	fMap.put("/img/*", "anon");
+	fMap.put("/plugins/*", "anon");
 	fMap.put("/logout", "anon");
 	fMap.put("/**", "authc");
 	sf.setFilterChainDefinitionMap(fMap);

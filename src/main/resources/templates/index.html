@@ -19,6 +19,10 @@
 <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet" />
 <link href="css/animate.css" rel="stylesheet" />
 <link href="css/style.css?v=4.1.0" rel="stylesheet" />
+<script type="text/javascript"
+	src="plugins/photoEditor/scripts/swfobject.js"></script>
+<script type="text/javascript"
+	src="plugins/photoEditor/scripts/fullAvatarEditor.js"></script>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg"
 	style="overflow: hidden">
@@ -33,11 +37,13 @@
 				<ul class="nav" id="side-menu">
 					<li class="nav-header">
 						<div class="dropdown profile-element">
-							<span><img alt="image" class="img-circle"
-								src="img/profile_small.jpg" /></span> <a data-toggle="dropdown"
-								class="dropdown-toggle" href="#"> <span class="clear">
-									<span class="block m-t-xs"><strong class="font-bold"
-										th:text="${name}"></strong></span> <span
+							<span> <img src="img/profile_small.jpg" id="userPhoto"
+								alt="image" class="img-circle" th:if="!${avatarUrl}" />
+								<img th:src="${avatarUrl}" id="userPhoto" alt="image"
+								class="img-circle" th:if="${avatarUrl}" />
+							</span> <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<span class="clear"> <span class="block m-t-xs"><strong
+										class="font-bold" th:text="${name}"></strong></span> <span
 									class="text-muted text-xs block" th:text="${role.rolename}"><b
 										class="caret"></b></span>
 							</span>
@@ -46,6 +52,7 @@
 
 								<li class="divider"></li>
 								<li><a data-toggle="modal" href="/index#modal-form">修改密码</a></li>
+								<li><a data-toggle="modal" href="/index#avatar-modal">修改头像</a></li>
 								<li><a href="/logout">安全退出</a></li>
 
 							</ul>
@@ -139,24 +146,24 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<h3 class="m-t-none m-b">修改密码</h3>
-							<form role="form"  id="myform">
+							<form role="form" id="myform">
 								<div class="form-group">
-									<label>原始密码</label> <input type="text" name="oldpassword" id="oldpassword" placeholder="请输入原始密码"
-										class="form-control" />
+									<label>原始密码</label> <input type="text" name="oldpassword"
+										id="oldpassword" placeholder="请输入原始密码" class="form-control" />
 								</div>
 								<div class="form-group">
-									<label>新密码：</label> <input type="password" name="password" id="password"  placeholder="请输入新密码"
-										class="form-control" />
+									<label>新密码：</label> <input type="password" name="password"
+										id="password" placeholder="请输入新密码" class="form-control" />
 								</div>
 
 								<div class="form-group">
-									<label>重新输入新密码：</label> <input type="password" name="spassword" id="spassword"
-										placeholder="请重复输入新密码" class="form-control" />
+									<label>重新输入新密码：</label> <input type="password" name="spassword"
+										id="spassword" placeholder="请重复输入新密码" class="form-control" />
 								</div>
 								<div class="modal-footer">
-									<input type="button" onclick="updatePassword()"  class="btn btn-primary" value="提交"/>
-									<input type="button" class="btn" value="关闭"
-										data-dismiss="modal"/>
+									<input type="button" onclick="updatePassword()"
+										class="btn btn-primary" value="提交" /> <input type="button"
+										class="btn" value="关闭" data-dismiss="modal" />
 								</div>
 							</form>
 
@@ -166,13 +173,101 @@
 			</div>
 		</div>
 	</div>
-	<!--     修改密码modal框结束 -->
+	<!-- 修改密码modal框结束 -->
+	<!-- 	修改头像模态框开始 -->
+	<div id="avatar-modal" class="modal fade" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="row">
+					<div class="col-xs-12">
+
+						<div style="width: 632px; margin: 0 auto; text-align: center">
+							<h1 style="text-align: center">用户头像编辑</h1>
+							<div>
+								<p id="swfContainer">
+									本组件需要安装Flash Player后才可使用，请从<a
+										href="http://www.adobe.com/go/getflashplayer">这里</a>下载安装。
+								</p>
+							</div>
+							<button type="button" id="upload"
+								style="display: none; margin-top: 8px;">swf外定义的上传按钮，点击可执行上传保存操作</button>
+						</div>
+						<script type="text/javascript">
+							 swfobject.addDomLoadEvent(function () {
+						            var swf = new fullAvatarEditor("swfContainer", {
+						                id: 'swf',
+						                method : 'post',
+						                upload_url: '/system/updateAvater',
+						                //  src_url: "/samplePictures/Default.jpg",//默认加载的原图片的url
+						                src_upload: 0,//默认为0；是否上传原图片的选项，有以下值：0:不上传；1:上传；2 :显示复选框由用户选择
+						                isShowUploadResultIcon: false,//在上传完成时（无论成功和失败），是否显示表示上传结果的图标
+						                src_size: "2MB",//选择的本地图片文件所允许的最大值，必须带单位，如888Byte，88KB，8MB
+						                src_size_over_limit: "文件大小超出2MB，请重新选择图片。",//当选择的原图片文件的大小超出指定最大值时的提示文本。可使用占位符{0}表示选择的原图片文件的大小。
+						                src_box_width: "300",//原图编辑框的宽度
+						                src_box_height: "300",//原图编辑框的高度
+						                tab_visible: true,//是否显示选项卡*
+
+						                browse_box_width: "300",//图片选择框的宽度
+						                browse_box_height: "300",//图片选择框的高度
+
+						                avatar_sizes: "65*65",//100*100|50*50|32*32,表示一组或多组头像的尺寸。其间用"|"号分隔。
+						            }, function (msg) {
+						                switch (msg.code) {
+						                     case 1:  break;
+						                     case 2:  break;
+						                    case 3:
+						                        if (msg.type == 0) {
+						                           
+						                        }
+						                        else if (msg.type == 1) {
+						                            alert("摄像头已准备就绪但用户未允许使用！");
+						                        }
+						                        else {
+						                            alert("摄像头被占用！");
+						                        }
+						                        break;
+						                    case 5:
+						                        if (msg.type == 0) {
+						                            if (msg.content.sourceUrl) {
+						                                alert("原图片已成功保存至服务器，url为：\n" + msg.content.sourceUrl);
+						                          
+						                            }
+						                            alert("头像已成功保存至服务器，url为：\n" + msg.content.avatarUrls.join("\n"));
+						                            updateAvatar(msg.content.avatarUrls);
+						                        }
+						                        break;
+						                }
+						            }
+						            );
+						            document.getElementById("upload").onclick = function () {
+						                swf.call("upload");
+						            };
+						        });
+						</script>
+
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.page-content -->
+		</div>
+	</div>
+	<!-- /.main-content -->
+	<!--     修改头像modal框结束 -->
 	<!-- 全局js -->
 	<script src="js/jquery.min.js?v=2.1.4"></script>
 	<script src="js/bootstrap.min.js?v=3.3.6"></script>
 	<!-- 动态添加菜单js，必须定义在jquery后和h+框架前。 -->
 	<script th:inline="javascript">
-// 	模态框提交
+	//刷新用户头像	
+	function updateAvatar(value){
+		$("#userPhoto").attr("src",value);//用户头像
+	}
+	
+	
+	
+	// 	模态框提交
 	function updatePassword(){
 	   
 	    var spassword=$("#spassword");
@@ -218,15 +313,12 @@
 	 }
 	
 	 $(function()
-	{var menuHead = [[${menuHead}]];
-		
+	{    var menuHead = [[${menuHead}]];		
 		 var $menu=$("#side-menu");
 		 for(var i=0;i<menuHead.sonsList.length;i++){
 		menuinit(menuHead.sonsList[i]);
-		 }
-	
+		 }	
  		 $menu.append(html);
-		 
 	});
 	 /*]]>*/
 	</script>
@@ -239,6 +331,5 @@
 	<script type="text/javascript" src="js/contabs.js"></script>
 	<!-- 第三方插件 -->
 	<script src="js/plugins/pace/pace.min.js"></script>
-
 </body>
 </html>

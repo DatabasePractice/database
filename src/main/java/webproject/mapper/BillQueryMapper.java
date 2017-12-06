@@ -24,6 +24,6 @@ public interface BillQueryMapper {
 	PageData findById(PageData pd);
 	int countOflistAll(PageData pd);
 	List<PageData> listAll(PageData pd);
-	List<PageData> datalistPage(PageData pd);
+	List<PageData> billQueryPage(PageData pd);
 	int countOfdatalistPage(PageData pd);
 }

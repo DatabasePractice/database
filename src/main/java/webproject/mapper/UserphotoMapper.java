@@ -17,10 +17,9 @@ import webproject.model.system.User;
 * 
 */
 @Mapper
-public interface CustomMapper {
-//	void save(PageData pd);
-//	void delete(PageData pd);
-//	void edit(PageData pd);
-//	PageData findById(PageData pd);
-	PageData datalistPage(PageData pd);
+public interface UserphotoMapper {
+	void save(PageData pd);
+	void delete(PageData pd);
+	void edit(PageData pd);
+	PageData findById(PageData pd);
 }

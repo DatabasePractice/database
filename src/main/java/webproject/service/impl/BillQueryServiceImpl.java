@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 
+import webproject.mapper.BillMapper;
 import webproject.mapper.PaymentMapper;
 import webproject.mapper.RoleMapper;
 import webproject.model.PageData;
@@ -27,17 +28,19 @@ import webproject.service.PaymentService;
 @Service
 public class BillQueryServiceImpl implements BillQueryService {
 	@Autowired
-	PaymentMapper payDao;
+	BillMapper payDao;
 
-	public PageData findAll(PageData pd) {
+	
+	
+	public PageData queryProject(PageData pd) {
 		int offset = pd.getAsInt("offset");
 		int limit = pd.getAsInt("limit");
 		int pageNum = offset / limit + 1;
 		PageData returnpd = new PageData();
 		PageHelper.startPage(pageNum, limit);
-		returnpd.put("rows", payDao.datalistPage(pd));
-		int totalcount = payDao.countOfdatalistPage(pd);
-		returnpd.put("total", totalcount);
+		returnpd.put("rows", payDao.queryProjectPage(pd));
+//		int totalcount = payDao.countOfdatalistPage(pd);
+		returnpd.put("total",1);
 		return returnpd;
 	}
 
