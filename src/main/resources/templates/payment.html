@@ -174,7 +174,8 @@
 				queryParams : function(params) {
 					var queryParams = {
 						limit : params.limit,
-						offset : params.offset
+						offset : params.offset,
+						CUSTOM_ID:$(CUSTOM_ID).val()
 					}
 					$('#searchBox').find('input[name]').each(function() {
 						queryParams[$(this).attr('name')] = $(this).val();

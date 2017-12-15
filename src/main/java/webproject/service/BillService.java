@@ -12,4 +12,5 @@ import webproject.model.PageData;
 public interface BillService {
 	void  importBillByExcel(FileInputStream fi) throws Exception;
 	void  importBill(PageData pd);
+	PageData queryProject(PageData pd);
 }

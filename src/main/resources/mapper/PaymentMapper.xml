@@ -48,6 +48,7 @@
 		<include refid="tableName"></include>
 		where 
 			PAY_ID = #{PAY_ID}
+			<!-- #{PAY_ID}是pagedata里的值 -->
 	</delete>
 	
 	<!-- 修改 -->
