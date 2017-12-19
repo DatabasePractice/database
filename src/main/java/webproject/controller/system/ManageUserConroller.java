@@ -178,7 +178,7 @@ public class ManageUserConroller extends BaseController {
 					//确保上传路径存在
 					File uploadDir=new File(ClassUtils.getDefaultClassLoader().getResource("").getPath()+"/public/uploadFiles/uploadUserPhoto");
 					if(!uploadDir.exists())
-						uploadDir.mkdir();
+						uploadDir.mkdirs();
 					inputStream = new BufferedInputStream(mfile.getInputStream());
 					outputStream = new BufferedOutputStream(
 							new FileOutputStream(ClassUtils.getDefaultClassLoader().getResource("").getPath() +"/public/"+ virtualPath));

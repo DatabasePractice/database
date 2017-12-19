@@ -14,7 +14,7 @@
 		china.NAME as HALL_LOCATION ,
 		HALL_NAME,			
 		CUSTOM.NAME as NAME,	
-		BALANCE,	
+		BALANCE	
 		
 	</sql>
 	
@@ -24,7 +24,7 @@
 		#{TEL},	
 		#{NAME},	
 		#{POSITION},	
-		#{BALANCE},	
+		#{BALANCE}
 		
 	</sql>
 	

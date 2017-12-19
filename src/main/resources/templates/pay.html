@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!-- 相对路径设定（建议每个页面都加上，防止相对路径出错误） -->
+<base
+	th:href="${#httpServletRequest.getScheme()
+    +'://'
+    +#httpServletRequest.getServerName()
+    +':'
+    +#httpServletRequest.getServerPort()
+    +#httpServletRequest.getContextPath()
+    +'/'
+    }" />
+<!--     相对路径设定结束 -->
+
+<link rel="shortcut icon" href="favicon.ico" />
+<link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet" />
+<link href="css/font-awesome.css?v=4.4.0" rel="stylesheet" />
+<link href="css/plugins/chosen/chosen.css" rel="stylesheet" />
+<link href="css/animate.css" rel="stylesheet" />
+<link href="css/style.css?v=4.1.0" rel="stylesheet" />
+<link href="css/plugins/bootstrap-table/bootstrap-table.min.css"
+	rel="stylesheet" />
+<title>用户缴费</title>
+<style type="text/css">
+#search {
+	text-align: right;
+	position: relative;
+}
+
+.autocomplete {
+	border: 1px solid #9ACCFB;
+	background-color: white;
+	text-align: left;
+}
+
+.clickable {
+	cursor: default;
+}
+
+.highlight {
+	background-color: #9ACCFB;
+}
+
+#hide {
+	display: none;
+}
+</style>
+<style>
+#hide {
+	display: none;
+}
+</style>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>查找用户</h5>
+						<div class="ibox-tools">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a> <a class="dropdown-toggle" data-toggle="dropdown"
+								href="index.html#"> <i class="fa fa-wrench"></i>
+							</a> <a class="close-link"> <i class="fa fa-times"></i>
+							</a>
+						</div>
+					</div>
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="searchBox">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="search" class="form-group">
+										<label class="col-sm-1 control-label" for="search-text">顾客电话号码:</label>
+										<div class="col-sm-4">
+											<input class="form-control" placeholder="请输入顾客的电话号码"
+												id="CUSTOM_ID" name="CUSTOM_ID" value="" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="row">
+							<div class="col-sm-12">
+								<button class="btn btn-w-m btn-primary" id="show">搜索</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="hide">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>用户信息</h5>
+						<div class="ibox-tools">
+							<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+							</a> <a class="dropdown-toggle" data-toggle="dropdown"
+								href="index.html#"> <i class="fa fa-wrench"></i>
+							</a>
+							<ul class="dropdown-menu dropdown-user">
+								<li><a href="index.html#">选项1</a></li>
+								<li><a href="index.html#">选项2</a></li>
+							</ul>
+							<a class="close-link"> <i class="fa fa-times"></i>
+							</a>
+						</div>
+					</div>
+					<div class="ibox-content">
+						<div class="row">
+							<div class="col-sm-12">
+								<h5 id="phnum"></h5>
+							</div>
+							<div class="col-sm-12">
+								<h5 id="customName"></h5>
+							</div>
+							<div class="col-sm-12">
+								<h5 id="status">账户类型：个人账户</h5>
+							</div>
+							<div class="col-sm-12">
+								<h5 id="balance"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="ibox float-e-margins">
+							<div class="ibox-title">
+								<h5>缴费信息</h5>
+								<div class="ibox-tools">
+									<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+									</a> <a class="dropdown-toggle" data-toggle="dropdown"
+										href="index.html#"> <i class="fa fa-wrench"></i>
+									</a>
+									<ul class="dropdown-menu dropdown-user">
+										<li><a href="index.html#">选项1</a></li>
+										<li><a href="index.html#">选项2</a></li>
+									</ul>
+									<a class="close-link"> <i class="fa fa-times"></i>
+									</a>
+								</div>
+							</div>
+							<div class="ibox-content">
+								<form class="form-horizontal m-t" id="searchBox">
+									<div class="row">
+										<div class="col-sm-12">
+											<div id="search" class="form-group">
+												<label class="col-sm-1 control-label" for="search-text">顾客所缴费用:</label>
+												<div class="col-sm-4">
+													<input class="form-control" placeholder="请输入顾客缴费的金额"
+														id="cost" name="cost" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+
+								<h5>缴费方式:</h5>
+
+								<div class="col-sm-12">
+									<div class="form-group">
+
+										<div class="input-group">
+											<select data-placeholder="选择缴费方式" class="chosen-select"
+												style="width: 350px;" tabindex="2">
+												<option value="">请选择缴费方式</option>
+												<option value="110000" hassubinfo="true">现金缴费</option>
+												<option value="120000" hassubinfo="true">网厅缴费</option>
+												<option value="130000" hassubinfo="true">支付宝缴费</option>
+												<option value="140000" hassubinfo="true">微信缴费</option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="row">
+									<div class="col-sm-12">
+										<button class="btn btn-w-m btn-primary" id="searchButton">确定缴费</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<script src="js/jquery.min.js?v=2.1.4"></script>
+	<script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+	<!-- 自定义js -->
+	<script src="js/content.js?v=1.0.0"></script>
+
+	<!-- jQuery Validation plugin javascript-->
+	<script src="js/plugins/validate/jquery.validate.min.js"></script>
+	<script src="js/plugins/validate/messages_zh.min.js"></script>
+	<script src="js/demo/form-validate-demo.js"></script>
+	<script src="js/plugins/layer/laydate/laydate.js"></script>
+	<script src="js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+	<script
+		src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script>
+	$(function(){
+		$("#show").click(function(){
+			var str = document.getElementById("CUSTOM_ID").value;
+			var $save = $("#save");
+			$.ajax({
+				'url' : '/pay/SearchCustom', //服务器的地址
+				'data' : {
+					'TEL' : str
+				}, //参数
+				'dataType' : 'json', //返回数据类型
+				'type' : 'POST', //请求类型
+				'success' : function(data) {
+					if(data.status==200){ 
+						
+				document.getElementById("hide").style.display = "block";
+				$("#phnum").html("用户电话号码:"+data.data.TEL);
+				$("#customName").html("用户姓名:"+data.data.NAME);
+				$("#balance").html("用户余额:"+data.data.BALANCE);
+					}
+					else alert("不存在该用户号码");
+				}
+			});//事件注册完毕
+		});
+	});
+	</script>
+</body>
+</html>
