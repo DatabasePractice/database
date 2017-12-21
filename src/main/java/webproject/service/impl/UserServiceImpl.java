@@ -141,4 +141,22 @@ public class UserServiceImpl implements UserService {
 		result.setMsg("修改成功");
 		return result;
 	}
+	
+	@Override
+	public  Integer findUserIDByAccount(PageData pd) throws Exception {
+		// TODO Auto-generated method stub
+		String account=pd.getString("account");
+		if(account!=null){
+		User user=new User();
+		user.setAccount(account);
+		List<User> userlist= usermapper.findUser(user);
+		if((user=userlist.get(0))!=null){
+         String useridstr=user.getId();
+         int userid=Integer.parseInt(useridstr);
+		  return  userid;
+		}
+		else return null;
+		}
+		else throw  new RuntimeException("account不能为空");	
+	}
 }

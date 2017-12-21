@@ -18,6 +18,7 @@
 		
 	</sql>
 	
+	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
 		#{CUSTOM_ID},	
@@ -73,6 +74,52 @@
 		and custom.HALL_ID=hall.HALL_ID and hall.HALL_LOCATION=china.ID
 	</select>
 		
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select 
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+		where 
+			CUSTOM_ID = #{CUSTOM_ID}
+	</select>
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
+	</select>
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		custom
+		set 
+			CUSTOM_ID = #{CUSTOM_ID},
+			TEL = #{TEL},
+			NAME = #{NAME},
+			HALL_ID=#{HALL_ID},
+			BALANCE = #{BALANCE}
+		
+		where 
+		CUSTOM_ID = #{CUSTOM_ID}
+	</update>
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where 
+			CUSTOM_ID = #{CUSTOM_ID}
+	</delete>
 	
+	<!-- 通过TEL获取数据 -->
+	<select id="findByTel" parameterType="String" resultType="pd">
+		select 
+		*
+		from 
+		custom
+		where 
+			TEL = #{TEL}
+	</select>
 	
 </mapper>

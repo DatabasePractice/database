@@ -57,6 +57,8 @@
 			</div>
 		</div>
 
+
+
 		<div class="ibox-content">
 			<form class="form-horizontal m-t" id="searchBox">
 				<div class="row">
@@ -69,60 +71,16 @@
 							</div>
 						</div>
 					</div>
-<<<<<<< HEAD
-
-					<div class="ibox-content">
-						<form class="form-horizontal m-t" id="searchBox">
-							<div class="row">
-								<div class="col-sm-3">
-									<div id="search" class="form-group">
-										<label  class="col-sm-3 control-label">顾客ID</label>
-										<div class="col-sm-5">
-										<input  class="form-control" placeholder="请输入顾客ID"
-											id="CUSTOM_ID" name="CUSTOM_ID" />
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="form-group">
-										<label class="col-sm-3 control-label">账单起止时间</label>
-										<div class="col-sm-9">
-											<input placeholder="开始日期" class="form-control layer-date"
-												id="start" name="BEGINTIME" 
-												onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
-												/> <input placeholder="结束日期" class="form-control layer-date" 
-												id="end" name="ENDTIME"
-												onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
-												/>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div id="search" class="form-group">
-										<label  class="col-sm-3 control-label">项目名称</label>
-										<div class="col-sm-9">
-										<input  class="form-control" placeholder="请输入项目名称"
-											id="TYPE" name="TYPE" />
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-5">
-									<div id="toolbar">
-										<button id="query" class="btn btn-default">查询</button>
-									</div>
-								</div>
-=======
 					<div class="col-sm-4">
 						<div class="form-group">
 							<label class="col-sm-3 control-label">账单起止时间</label>
 							<div class="col-sm-9">
 								<input placeholder="开始日期" class="form-control layer-date"
-									id="start"
+									id="start" name="BEGINTIME"
 									onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
 								<input placeholder="结束日期" class="form-control layer-date"
-									id="end"
+									id="end" name="ENDTIME"
 									onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
->>>>>>> branch 'master' of https://github.com/DatabasePractice/database.git
 							</div>
 						</div>
 					</div>
@@ -130,25 +88,23 @@
 						<div id="search" class="form-group">
 							<label class="col-sm-3 control-label">项目名称</label>
 							<div class="col-sm-9">
-								<input class="form-control" placeholder="请输入项目名称" id="PROJECT"
-									name="PROJECT" />
+								<input class="form-control" placeholder="请输入项目名称" id="TYPE"
+									name="TYPE" />
 							</div>
 						</div>
 					</div>
+					<div class="col-sm-5">
+						<div id="toolbar">
+							<button id="query" class="btn btn-default">查询</button>
+						</div>
+					</div>
+
+
 				</div>
 			</form>
-			<div class="row">
-				<div class="col-sm-12">
-					<button id="query1" class="btn btn-default">按时间查询</button>
-					<button id="query2" class="btn btn-default">按项目查询</button>
-				</div>
-			</div>
-
-
+			<table id="tableList" class="table table-striped"></table>
 		</div>
-		<table id="tableList" class="table table-striped"></table>
 	</div>
-
 	<script src="js/jquery.min.js?v=2.1.4"></script>
 	<script src="js/bootstrap.min.js?v=3.3.6"></script>
 
@@ -168,21 +124,13 @@
 		$(function() {
 
 			$('#tableList').bootstrapTable({
-<<<<<<< HEAD
-				columns : [{
+				columns : [ {
 					field : 'CUSTOM_ID',
 					title : '客户ID',
-				},{
-					field : 'STATUS',
-					title : '账单编号',
-				},  {
-=======
-				url:'/billquery/TableInit',
-				columns : [ {
-					field : 'STATUS',
+				}, {
+					field : 'BILL_ID',
 					title : '账单编号',
 				}, {
->>>>>>> branch 'master' of https://github.com/DatabasePractice/database.git
 					field : 'CREATETIME',
 					title : '创建时间',
 					formatter : function(value, row, index) {
@@ -197,14 +145,7 @@
 				}, {
 					field : 'TOTAL_AMOUNT',
 					title : '总金额',
-<<<<<<< HEAD
-				}, 
-=======
-				}, {
-					field : 'CUSTOM_ID',
-					title : '客户ID',
-				},
->>>>>>> branch 'master' of https://github.com/DatabasePractice/database.git
+				}
 				// {
 				//         	field:"action",
 				//         	formatter:"actionFormatter",
@@ -224,47 +165,22 @@
 					var queryParams = {
 						limit : params.limit,
 						offset : params.offset,
-<<<<<<< HEAD
-						CUSTOM_ID:$("input[name='CUSTOM_ID']").val(),
-						TYPE:$("input[name='TYPE']").val(),
-						BEGINTIME:$("input[name='BEGINTIME']").val(),
-						ENDTIME:$("input[name='ENDTIME']").val()
-=======
 						CUSTOM_ID : $("input[name='CUSTOM_ID']").val(),
-						PROJECT : $("input[name='PROJECT']").val()
->>>>>>> branch 'master' of https://github.com/DatabasePractice/database.git
+						TYPE : $("input[name='TYPE']").val(),
+						BEGINTIME : $("input[name='BEGINTIME']").val(),
+						ENDTIME : $("input[name='ENDTIME']").val()
 					}
-<<<<<<< HEAD
-=======
 
-					/* $('#searchBox').find('input[name]').each(function() {
-						queryParams[$(this).attr('name')] = $(this).val();
-					});  */
->>>>>>> branch 'master' of https://github.com/DatabasePractice/database.git
 					return queryParams;
 				},//请求服务器数据时的参数
-<<<<<<< HEAD
-				
-=======
-			//
 			});
 
-			$("#query2").click(function() {
+			$("#query").click(function() {
 				$('#tableList').bootstrapTable('refresh', {
-					url : "/billquery/TableInit"
+					url : "/bill/billquery/TableInit"
 				});
->>>>>>> branch 'master' of https://github.com/DatabasePractice/database.git
-			});
-<<<<<<< HEAD
-			
-			$("#query").click(function(){
-				$('#tableList').bootstrapTable('refresh',{url:"/bill/billquery/TableInit"});	
 				return false;
-			}); 
-			
-=======
->>>>>>> branch 'master' of https://github.com/DatabasePractice/database.git
-
+			});
 		});
 		/*<![CDATA[*/
 		function changeDateFormat(cellval) {

@@ -14,5 +14,6 @@
 <mapper resource="mapper/PaymentMapper.xml"/>
 <mapper resource="mapper/BillMapper.xml"/>
 <mapper resource="mapper/UserPhotoMapper.xml"/>
+<mapper resource="mapper/ChargeMapper.xml"/>
 </mappers>
 </configuration>

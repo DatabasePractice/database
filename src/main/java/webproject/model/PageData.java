@@ -169,6 +169,16 @@ public class PageData extends HashMap implements Map{
 		return out;
 	}
 
-	
+	public double getAsDouble(String key) {
+		// TODO Auto-generated method stub
+		double result;
+		try{
+			result=(double)map.get(key);
+		}
+		catch(ClassCastException e){
+		result=Double.parseDouble((String) map.get(key));	
+		}
+		return result;
+	}
 	
 }

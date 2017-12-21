@@ -115,18 +115,32 @@
 					</div>
 					<div class="ibox-content">
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col-sm-6">
 								<h5 id="phnum"></h5>
 							</div>
-							<div class="col-sm-12">
+							<div class="col-sm-6">
 								<h5 id="customName"></h5>
 							</div>
-							<div class="col-sm-12">
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
 								<h5 id="status">账户类型：个人账户</h5>
 							</div>
-							<div class="col-sm-12">
+
+							<div class="col-sm-6">
+								<h5 id="HALL_NAME"></h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<h5 id="HALL_LOCATION"></h5>
+							</div>
+							<div class="col-sm-6">
 								<h5 id="balance"></h5>
 							</div>
+						</div>
+						<div class="col-sm-12" style="display: none;">
+							<input type="text" id="phnum1" />
 						</div>
 					</div>
 				</div>
@@ -172,21 +186,37 @@
 
 										<div class="input-group">
 											<select data-placeholder="选择缴费方式" class="chosen-select"
-												style="width: 350px;" tabindex="2">
+												style="width: 350px;" tabindex="2" id="PAY_METHOD">
 												<option value="">请选择缴费方式</option>
 												<option value="110000" hassubinfo="true">现金缴费</option>
-												<option value="120000" hassubinfo="true">网厅缴费</option>
-												<option value="130000" hassubinfo="true">支付宝缴费</option>
-												<option value="140000" hassubinfo="true">微信缴费</option>
+												<option value="120000" hassubinfo="true">银行卡缴费</option>
+												<option value="130000" hassubinfo="true">充值卡缴费</option>
+
 											</select>
 										</div>
 									</div>
 								</div>
 
+								<h5>缴费渠道:</h5>
 
+								<div class="col-sm-12">
+									<div class="form-group">
+
+										<div class="input-group">
+											<select data-placeholder="选择缴费渠道" class="chosen-select"
+												style="width: 350px;" tabindex="2" id="QD">
+												<option value="">请选择缴费渠道</option>
+												<option value="110000" hassubinfo="true">营业厅</option>
+												<option value="120000" hassubinfo="true">自助终端</option>
+												<option value="130000" hassubinfo="true">网厅</option>
+
+											</select>
+										</div>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-sm-12">
-										<button class="btn btn-w-m btn-primary" id="searchButton">确定缴费</button>
+										<button class="btn btn-w-m btn-primary" id="subimt0">确定缴费</button>
 									</div>
 								</div>
 							</div>
@@ -213,30 +243,82 @@
 	<script
 		src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 	<script>
-	$(function(){
-		$("#show").click(function(){
-			var str = document.getElementById("CUSTOM_ID").value;
-			var $save = $("#save");
-			$.ajax({
-				'url' : '/pay/SearchCustom', //服务器的地址
-				'data' : {
-					'TEL' : str
-				}, //参数
-				'dataType' : 'json', //返回数据类型
-				'type' : 'POST', //请求类型
-				'success' : function(data) {
-					if(data.status==200){ 
-						
-				document.getElementById("hide").style.display = "block";
-				$("#phnum").html("用户电话号码:"+data.data.TEL);
-				$("#customName").html("用户姓名:"+data.data.NAME);
-				$("#balance").html("用户余额:"+data.data.BALANCE);
-					}
-					else alert("不存在该用户号码");
+		$(function() {
+			$("#show").click(function() {
+				searchAjax();
+
+			});
+
+			$("#subimt0").click(function() {
+				var options = $("#PAY_METHOD option:selected"); //获取选中的项
+				var PAY_METHOD = options.text();
+				var phnum = $("#phnum1").val();
+				var cost = document.getElementById("cost").value;
+				var val = options.val();
+				var options2 = $("#QD option:selected");
+				var QD = options2.text();
+				var val2 = options2.val();
+				if (val == '' || val2 == '') {
+					alert("请选择缴费方式！");
+					return;
 				}
-			});//事件注册完毕
+				$.ajax({
+					'url' : '/pay/startPay', //服务器的地址
+					'data' : {
+						'PAY_METHOD' : PAY_METHOD,
+						'cost' : cost,
+						'TEL' : phnum,
+						'QD' : QD
+					}, //参数
+					'dataType' : 'json', //返回数据类型
+					'type' : 'POST', //请求类型
+					'success' : function(data) {
+						if (data.status == 200) {
+							alert(data.msg);
+							searchAjax();
+						} else
+							alert("缴费失败！");
+					},
+					'error' : function(result) {
+						alert("缴费失败！");
+					},
+
+				});
+			});
+
+			function searchAjax() {
+
+				var str = document.getElementById("CUSTOM_ID").value;
+				var $save = $("#save");
+				$
+						.ajax({
+							'url' : '/pay/SearchCustom', //服务器的地址
+							'data' : {
+								'TEL' : str
+							}, //参数
+							'dataType' : 'json', //返回数据类型
+							'type' : 'POST', //请求类型
+							'success' : function(data) {
+								if (data.status == 200) {
+
+									document.getElementById("hide").style.display = "block";
+									$("#phnum").html("用户电话号码:" + data.data.TEL);
+									$("#customName").html(
+											"用户姓名:" + data.data.NAME);
+									$("#balance").html(
+											"用户余额:" + data.data.BALANCE);
+									$("#HALL_NAME").html(
+											"所属营业厅:" + data.data.HALL_NAME);
+									$("#HALL_LOCATION").html(
+											"归属地:" + data.data.HALL_LOCATION);
+									$("#phnum1").val(data.data.TEL);
+								} else
+									alert("不存在该用户号码");
+							}
+						});
+
+			}
 		});
-	});
 	</script>
 </body>
 </html>

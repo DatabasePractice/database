@@ -80,6 +80,7 @@ public class MenuUtil {
 			// 如果更新菜单的上级菜单原本为leaf则取消其leaf状态
 			if (parentmenu.getIsleaf()) {
 				parentmenu.setIsleaf(false);
+				menumapper.updateMenu(parentmenu);
 				menumapper.updateMenu(menuVo);
 			}
 		}

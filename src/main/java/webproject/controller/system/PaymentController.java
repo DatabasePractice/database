@@ -46,8 +46,6 @@ public class PaymentController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> tableinit() {
 		PageData pd = this.getPageData();
-		if (pd.judgeEmpty("CUSTOM_ID")&&pd.judgeEmpty("TEL"))
-			return new PageData();
 		return paymentService.findAll(pd);
 	}
 }

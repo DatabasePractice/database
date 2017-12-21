@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="webproject.mapper.ChargeMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		CHARGE
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		CHARGE_ID,
+		CUSTOM_ID ,
+		CHARGE_AMOUNT,
+		BILL_ID
+	</sql>
+	
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{CHARGE_ID},	
+		#{CUSTOM_ID},	
+		#{CHARGE_AMOUNT},	
+		#{BILL_ID}
+	</sql>
+	
+	<!-- 新增-->
+	<insert id="insert" parameterType="pd">
+		insert into 
+	<include refid="tableName"></include>
+		(
+	<include refid="Field"></include>
+		) values (
+	<include refid="FieldValue"></include>
+		)
+	</insert>
+	
+
+	
+
+</mapper>

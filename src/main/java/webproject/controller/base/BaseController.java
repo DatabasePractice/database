@@ -63,6 +63,13 @@ public class BaseController {
 		logger.info("end");
 		logger.info("");
 	}
+	/**
+	 * 
+	 * @param msg
+	 * @param status
+	 * @param t
+	 * @return
+	 */
 	public static ResultBean responseMsg(String msg,int status,Object t){
 		ResultBean result = new ResultBean();
 		result.setData(t);

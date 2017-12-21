@@ -28,7 +28,7 @@
 		#{QD},	
 		#{EMPLOYEE_ID},	
 		#{AMOUNT},	
-		#{HALL_ID},	
+		#{HALL_ID}
 	</sql>
 	
 	<!-- 新增-->

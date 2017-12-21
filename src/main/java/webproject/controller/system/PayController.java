@@ -19,6 +19,7 @@ import webproject.model.PageData;
 import webproject.model.ResultBean;
 import webproject.model.system.Role;
 import webproject.model.system.User;
+import webproject.service.AccountService;
 import webproject.service.AuthorizeService;
 import webproject.service.CustomService;
 import webproject.service.PaymentService;
@@ -36,7 +37,8 @@ import webproject.service.UserService;
 public class PayController extends BaseController {
 	@Autowired
 	CustomService customService;
-
+	@Autowired
+	AccountService accountService;
 	@RequestMapping("")
 	public String toPaymentTable(Model model) {
 		return "pay";
@@ -50,6 +52,18 @@ public class PayController extends BaseController {
 		if(returnpd==null||returnpd.isEmpty())
 		  return this.responseMsg("找不到该用户", 500,null);
 		else	return this.responseMsg(null, 200,returnpd);
+		
+	}
+	
+	@RequestMapping("/startPay")
+	@ResponseBody
+	public ResultBean startPay() throws Exception {
+		PageData pd = this.getPageData();
+		String TEL=pd.getString("TEL");
+		String cost=pd.getString("cost");
+		pd.put("account", this.getUsername());
+		accountService.Updateamount(pd);
+		return this.responseMsg("缴费成功,已为电话号码【"+TEL+"】充值"+cost+"元", 200,null);
 		
 	}
 }

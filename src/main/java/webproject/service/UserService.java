@@ -2,6 +2,7 @@ package webproject.service;
 
 import java.util.List;
 
+import webproject.model.PageData;
 import webproject.model.ResultBean;
 import webproject.model.system.MenuVo;
 import webproject.model.system.Role;
@@ -31,5 +32,8 @@ public interface UserService {
 	ResultBean BatchDeleteUser(List<String> ids) throws Exception;
 	
 ResultBean updatePassword(String  username,String password,String oldpassword) throws Exception;
+
+
+Integer findUserIDByAccount(PageData pd) throws Exception;
 
 }
